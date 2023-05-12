@@ -45,8 +45,6 @@ struct Assignment {
 			cin >> UserInput2;
 			if (!cin.fail()) { break; }
 			else cout << "Invalid input, try again\n";
-			cin.clear(); //clear error state
-			cin.ignore();
 		}
 		this->Due = UserInput2;
 
@@ -55,8 +53,6 @@ struct Assignment {
 			cin >> UserInput2;
 			if (!cin.fail()) { break; }
 			else cout << "Invalid input, try again\n";
-			cin.clear(); //clear error state
-			cin.ignore();
 		}
 		this->Weight = UserInput2;
 		this->Assn_ID = Assn_Count;
@@ -81,60 +77,56 @@ struct Assignment {
 		int UserInput2 = 0;
 
 		//methods for updating parameters
-		cout << endl << "Assignment Update Tool\n";
-		cout << "Enter parameter to update:\n";
-		Print(); //show parameters and its values
+			cout << endl << "Assignment Update Tool\n";
+			cout << "Enter parameter to update:\n";
+			Print(); //show parameters and its values
 
-		while (1) {//input validation
-			cin >> UserInput;
-			if (UserInput == "Name" || UserInput == "name") { break; }
-			else if (UserInput == "Course" || UserInput == "course") { break; }
-			else if (UserInput == "Due" || UserInput == "due") { break; }
-			else if (UserInput == "Weight" || UserInput == "weight") { break; }
-			else if (UserInput == "Complete" || UserInput == "complete") { break; }
-			else { cout << "Invalid input, try again\n"; }
-		}
-
-		if (UserInput == "Name" || UserInput == "name") {
-			cout << "Enter new name to update Assignment Name: " << this->Name << endl;
-			getline(cin >> ws, UserInput); this->Name = UserInput;
-		}
-		else if (UserInput == "Course" || UserInput == "course") {
-			cout << "Enter new course to update Assignment Course: " << this->Course << endl;
-			getline(cin >> ws, UserInput); this->Course = UserInput;
-		}
-		else if (UserInput == "Due" || UserInput == "due") {
-			cout << "Enter new due date to update Assignment Due: " << this->Due << " days" << endl;
-			while (1) { //input validation
-				cin >> UserInput2;
-				if (!cin.fail()) { break; }
-				else cout << "Invalid input, try again\n";
-				cin.clear(); //clear error state
-				cin.ignore();
-			}
-			this->Due = UserInput2;
-		}
-		else if (UserInput == "Weight" || UserInput == "weight") {
-			cout << "Enter new weight to update Assignment Weight: " << this->Weight << endl;
-			while (1) { //input validation
-				cin >> UserInput2;
-				if (!cin.fail()) { break; }
-				else cout << "Invalid input, try again\n";
-				cin.clear(); //clear error state
-				cin.ignore();
-			}
-			this->Weight = UserInput2;
-		}
-		else if (UserInput == "Complete" || UserInput == "complete") {
-			cout << "Enter new complete status for Assignment Complete: " << this->Complete << endl;
-			cout << "Is the assignment complete?(Y/N)\n";
-			while (1) { //input validation
+			while (1) {//input validation
 				cin >> UserInput;
-				if (UserInput == "Y" || UserInput == "y") { this->Complete = true; break; }
-				else if (UserInput == "N" || UserInput == "n") { this->Complete = false; break; }
-				else cout << "Invalid input, try again\n";
+				if (UserInput == "Name" || UserInput == "name") { break; }
+				else if (UserInput == "Course" || UserInput == "course") { break; }
+				else if (UserInput == "Due" || UserInput == "due") { break; }
+				else if (UserInput == "Weight" || UserInput == "weight") { break; }
+				else if (UserInput == "Complete" || UserInput == "complete") { break; }
+				else { cout << "Invalid input, try again\n"; }
 			}
-		}
+
+			if (UserInput == "Name" || UserInput == "name") {
+				cout << "Enter new name to update Assignment Name: " << this->Name << endl;
+				getline(cin >> ws, UserInput); this->Name = UserInput;
+			}
+			else if (UserInput == "Course" || UserInput == "course") {
+				cout << "Enter new course to update Assignment Course: " << this->Course << endl;
+				getline(cin >> ws, UserInput); this->Course = UserInput;
+			}
+			else if (UserInput == "Due" || UserInput == "due") {
+				cout << "Enter new due date to update Assignment Due: " << this->Due << " days" << endl;
+				while (1) { //input validation
+					cin >> UserInput2;
+					if (!cin.fail()) { break; }
+					else cout << "Invalid input, try again\n";
+				}
+				this->Due = UserInput2;
+			}
+			else if (UserInput == "Weight" || UserInput == "weight") {
+				cout << "Enter new weight to update Assignment Weight: " << this->Weight << endl;
+				while (1) { //input validation
+					cin >> UserInput2;
+					if (!cin.fail()) { break; }
+					else cout << "Invalid input, try again\n";
+				}
+				this->Weight = UserInput2;
+			}
+			else if (UserInput == "Complete" || UserInput == "complete") {
+				cout << "Enter new complete status for Assignment Complete: " << this->Complete << endl;
+				cout << "Is the assignment complete?(Y/N)\n";
+				while (1) { //input validation
+					cin >> UserInput;
+					if (UserInput == "Y" || UserInput == "y") { this->Complete = true; break; }
+					else if (UserInput == "N" || UserInput == "n") { this->Complete = false; break; }
+					else cout << "Invalid input, try again\n";
+				}
+			}
 	}
 
 	//print assignment
@@ -244,13 +236,7 @@ void Search(vector<Assignment>& Assignments) {
 		//Due Search
 		else if (UserInput == "Due" || UserInput == "due") {
 			cout << "Enter days due to search:\n";
-			while (1) { //input validation
-				cin >> UserInput2;
-				if (!cin.fail()) { break; }
-				else cout << "Invalid input, try again\n";
-				cin.clear(); //clear error state
-				cin.ignore();
-			}
+			cin >> UserInput2;
 			for (int i = 0; i < Assignments.size(); i++) {
 				if (Assignments.at(i).Due <= UserInput2) {
 					tempVector.push_back(i); //save position of element that matches search criteria
@@ -310,8 +296,16 @@ void Search(vector<Assignment>& Assignments) {
 
 }
 
+//Recursive print method
+void printVector(vector<Assignment>::iterator begin, vector<Assignment>::iterator end) {
+	if (begin != end) {
+		cout << *begin << endl;
+		printVector(++begin, end);
+	}
+}
+
 //print(with sort: by due, name(alphabetical), course(alpabetical), weight, complete
-void Print(vector<Assignment>& Assignments) {
+void Print(vector<Assignment> &Assignments) {
 	string UserInput;
 	int UserInput2 = 0;
 
@@ -360,10 +354,8 @@ void Print(vector<Assignment>& Assignments) {
 			//no sort
 		}
 
-		for (int i = 0; i < tempAssignments.size(); i++) {
-			tempAssignments.at(i).Print();
-			cout << endl;
-		}
+		//print resultant vector (Recursion)
+		printVector(tempAssignments.begin(), tempAssignments.end()); 
 
 		cout << "Print again?(y/n)\n";
 		while (1) { //input validation
@@ -441,7 +433,7 @@ void Save(vector<Assignment>& Assignments) {
 		SaveFile << Assignments.at(i).Course << ",";
 		SaveFile << Assignments.at(i).Due << ",";
 		SaveFile << Assignments.at(i).Weight << ",";
-		SaveFile << Assignments.at(i).Complete << "," << endl;
+		SaveFile << Assignments.at(i).Complete << "," <<endl;
 	}
 
 	SaveFile.close();
@@ -458,12 +450,12 @@ void Read(vector<Assignment>& Assignments) {
 		vector<char> v(TextLine.begin(), TextLine.end());
 		vector<string> s;
 		while (i < v.size()) {//iterate through vector
-			if (v.at(i) == ',') {
+			if (v.at(i) == ',') { 
 				string Temp(v.begin(), v.begin() + i); //convert range of chars inbetween delimiters into string
 				s.push_back(Temp);
 				v.erase(v.begin(), v.begin() + i + 1);
 				i = 0;
-			}
+			} 
 			i++;
 		}
 		Add(Assignments, s.at(0), s.at(1), stoi(s.at(2)), stoi(s.at(3)), stoi(s.at(4))); //use constructor to add Assignment with derived paramater-fields, stoi(string to int) conversions done where needed
